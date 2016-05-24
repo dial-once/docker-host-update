@@ -6,12 +6,14 @@ else
   exit 1;
 fi
 
-cat /root/.ssh/id_rsa.pub >> /data/authorized_keys
+#backup old authorized_keys
+cp /data/authorized_keys /tmp/keys
 
-#ssh -o StrictHostKeyChecking=no docker@$HOSTNAME
+#add newly generated one
+cat /root/.ssh/id_rsa.pub > /data/authorized_keys
 
-cat /data/authorized_keys
-echo 'OKAY'
-sed -i `echo /root/.ssh/id_rsa.pub` /data/authorized_keys
-echo 'OKAY2'
-cat /data/authorized_keys
+#update and upgrade
+ssh -o StrictHostKeyChecking=no $HOST_USR@$HOSTNAME 'sudo apt-get update && sudo apt-get upgrade -y'
+
+#put back ssh key
+cat /tmp/keys > /data/authorized_keys
