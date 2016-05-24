@@ -15,3 +15,7 @@ docker run -v /home/docker/.ssh/authorized_keys:/data/authorized_keys:rw --net=h
 ```yml
 
 ```
+
+## Env vars
+
+You can customize the host name by setting the `HOST_USR` env var. Default is `root`
