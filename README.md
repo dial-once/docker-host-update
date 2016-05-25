@@ -13,7 +13,13 @@ docker run -v /home/docker/.ssh/authorized_keys:/data/authorized_keys:rw --net=h
 ## Docker Cloud
 
 ```yml
-
+host-update:
+  autodestroy: always
+  image: 'dialonce/host-update:latest'
+  net: host
+  deployment_strategy: every_node
+  volumes:
+    - '/root/.ssh/authorized_keys:/data/authorized_keys'
 ```
 
 ## Env vars

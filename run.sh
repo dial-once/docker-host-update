@@ -9,8 +9,12 @@ fi
 #add newly generated rsa to authorized_keys
 cat /root/.ssh/id_rsa.pub >> /data/authorized_keys
 
+if [ -n "$DOCKERCLOUD_NODE_FQDN" ]; then
+  HOSTNAME=$DOCKERCLOUD_NODE_FQDN
+fi
+
 #update and upgrade
-#ssh -o StrictHostKeyChecking=no $HOST_USR@$HOSTNAME 'sudo apt-get update && sudo apt-get upgrade -y'
+ssh -o StrictHostKeyChecking=no $HOST_USR@$HOSTNAME 'sudo apt-get update && sudo apt-get upgrade -y'
 
 #remove generated rsa from authorized keys
 sort /root/.ssh/id_rsa.pub /data/authorized_keys | uniq -u > output
