@@ -6,14 +6,12 @@ else
   exit 1;
 fi
 
-#backup old authorized_keys
-cp /data/authorized_keys /tmp/keys
-
-#add newly generated one
-cat /root/.ssh/id_rsa.pub > /data/authorized_keys
+#add newly generated rsa to authorized_keys
+cat /root/.ssh/id_rsa.pub >> /data/authorized_keys
 
 #update and upgrade
-ssh -o StrictHostKeyChecking=no $HOST_USR@$HOSTNAME 'sudo apt-get update && sudo apt-get upgrade -y'
+#ssh -o StrictHostKeyChecking=no $HOST_USR@$HOSTNAME 'sudo apt-get update && sudo apt-get upgrade -y'
 
-#put back ssh key
-cat /tmp/keys > /data/authorized_keys
+#remove generated rsa from authorized keys
+sort /root/.ssh/id_rsa.pub /data/authorized_keys | uniq -u > output
+cat output > /data/authorized_keys
